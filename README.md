@@ -1,4 +1,4 @@
-# Medical Insurance Cost Prediction
+# Medical Insurance Cost Predictor
 
 This is a Flask web application that predicts medical insurance costs based on user input. It utilizes a pre-trained model, which predicts insurance charges based on various factors such as age, sex, BMI, number of children, smoking status, and region.
 
