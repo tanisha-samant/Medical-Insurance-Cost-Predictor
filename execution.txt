@@ -1,0 +1,9 @@
+>cd C:\Users\tanis\OneDrive\Medical_Insurance_Cost_Prediction
+
+>conda activate myenv
+
+# First, train and save the model
+>python train_model.py
+
+# Then run the Flask application
+>python app.py
