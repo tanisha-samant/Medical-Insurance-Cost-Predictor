@@ -42,6 +42,9 @@ Follow these steps to get a copy of the project up and running on your local mac
    Run the training script to create the model:
    ```bash
    python train_model.py
-5. **Run the Flask application**:
+## Usage
+1. Run the Flask application:
    ```bash
    python app.py
+2. Open your web browser and go to http://127.0.0.1:5000.
+3. Fill out the form with the required information and click "Predict Insurance Cost" to see the prediction.
