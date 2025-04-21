@@ -9,9 +9,9 @@ This is a Flask web application that predicts medical insurance costs based on u
 - Displays results in a clear and informative way.
 
 ## Demo
-![Screenshot 2024-11-15 194955](https://github.com/user-attachments/assets/404a60c8-5970-4d8e-858b-51112d6900cb)
+![Image](https://github.com/user-attachments/assets/cb3f79a1-20fc-4f58-93a6-dd68b8378a6e)
 
-![Screenshot 2024-11-15 195006](https://github.com/user-attachments/assets/8b91c239-3de6-4063-b199-951f9fd0e0a7)
+![Image](https://github.com/user-attachments/assets/bb418456-3ca9-43d2-a38b-6d81df472c3b)
 
 ## Technologies Used
 
