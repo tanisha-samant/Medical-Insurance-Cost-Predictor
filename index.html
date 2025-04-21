@@ -1,52 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Insurance Cost Prediction</title>
-    <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Insurance Cost Predictor</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Medical Insurance Cost Prediction</h1>
-        <form action="/predict" method="post">
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <input type="number" name="age" required min="1" max="100">
-            </div>
-            <div class="form-group">
-                <label for="sex">Sex:</label>
-                <select name="sex" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="bmi">BMI:</label>
-                <input type="number" step="0.01" name="bmi" required min="10" max="50">
-            </div>
-            <div class="form-group">
-                <label for="children">Children:</label>
-                <input type="number" name="children" required min="0" max="10">
-            </div>
-            <div class="form-group">
-                <label for="smoker">Smoker:</label>
-                <select name="smoker" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="region">Region:</label>
-                <select name="region" required>
-                    <option value="northeast">Northeast</option>
-                    <option value="northwest">Northwest</option>
-                    <option value="southeast">Southeast</option>
-                    <option value="southwest">Southwest</option>
-                </select>
-            </div>
-            <button type="submit">Predict Insurance Cost</button>
-        </form>
+<body class="bg-gray-100 text-gray-900 transition-all duration-300" id="body">
+
+  <header class="text-center py-12">
+    <h1 class="text-4xl font-extrabold">Welcome to the Insurance Cost Predictor</h1>
+    <p class="text-xl mt-4">Predict your health insurance cost in seconds!</p>
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" class="absolute top-8 right-8 bg-gray-800 text-white p-3 rounded-lg shadow-md">
+      🌙 Dark Mode
+    </button>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-xl transition-all duration-300" id="main-content">
+    <h2 class="text-2xl font-semibold text-center mb-6">Enter Your Details</h2>
+
+    <form action="/predict" method="POST" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="age" class="block text-lg font-medium">Age</label>
+          <input type="number" name="age" id="age" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" 
+       placeholder="Enter your age" required value="{{ form_data.age if form_data is defined else '' }}">
+        </div>
+        <div class="space-y-2">
+          <label for="sex" class="block text-lg font-medium">Sex</label>
+          <select name="sex" id="sex" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" required>
+            <option value="" disabled {{ 'selected' if not form_data is defined else '' }}>Select your gender</option>
+            <option value="male" {{ 'selected' if form_data is defined and form_data.sex == 'male' else '' }}>Male</option>
+            <option value="female" {{ 'selected' if form_data is defined and form_data.sex == 'female' else '' }}>Female</option>
+        </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="bmi" class="block text-lg font-medium">BMI</label>
+          <input type="number" step="any" name="bmi" id="bmi" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" 
+       placeholder="Enter your BMI" required value="{{ form_data.bmi if form_data is defined else '' }}">
+        </div>
+        <div class="space-y-2">
+          <label for="children" class="block text-lg font-medium">Children</label>
+          <input type="number" name="children" id="children" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" 
+       placeholder="Number of children" required value="{{ form_data.children if form_data is defined else '' }}">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="smoker" class="block text-lg font-medium">Smoker</label>
+          <select name="smoker" id="smoker" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" required>
+            <option value="" disabled {{ 'selected' if not form_data is defined else '' }}>Do you smoke?</option>
+            <option value="yes" {{ 'selected' if form_data is defined and form_data.smoker == 'yes' else '' }}>Yes</option>
+            <option value="no" {{ 'selected' if form_data is defined and form_data.smoker == 'no' else '' }}>No</option>
+        </select>
+        </div>
+        <div class="space-y-2">
+          <label for="region" class="block text-lg font-medium">Region</label>
+          <select name="region" id="region" class="w-full p-3 border border-gray-300 rounded-lg transition-all duration-300" required>
+            <option value="" disabled {{ 'selected' if not form_data is defined else '' }}>Select your region</option>
+            <option value="northeast" {{ 'selected' if form_data is defined and form_data.region == 'northeast' else '' }}>Northeast</option>
+            <option value="northwest" {{ 'selected' if form_data is defined and form_data.region == 'northwest' else '' }}>Northwest</option>
+            <option value="southeast" {{ 'selected' if form_data is defined and form_data.region == 'southeast' else '' }}>Southeast</option>
+            <option value="southwest" {{ 'selected' if form_data is defined and form_data.region == 'southwest' else '' }}>Southwest</option>
+        </select>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+          Predict
+        </button>
+      </div>
+      <div class="text-center space-x-4">
+        <button type="reset" id="reset-button" class="bg-gray-500 text-white px-8 py-3 rounded-lg hover:bg-gray-600 transition duration-300">
+          Reset
+        </button>
+      </div>
+    </form>
+
+    {% if prediction %}
+    <div class="mt-8 text-center">
+      <h3 class="text-xl font-semibold">Predicted Insurance Cost:</h3>
+      <p class="text-2xl font-bold text-blue-500">${{ prediction }}</p>
     </div>
+    {% endif %}
+  </main>
+
+  <footer class="text-center py-6 mt-8">
+    <p>&copy; 2025 Insurance Cost Predictor</p>
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('dark-mode-toggle');
+    const body = document.getElementById('body');
+    const mainContent = document.getElementById('main-content');
+    const inputs = document.querySelectorAll('input, select');
+    const labels = document.querySelectorAll('label');
+    const formText = document.querySelectorAll('h2, h3, p');
+  
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('bg-gray-900', 'text-white');
+      body.classList.remove('text-gray-900');
+      mainContent.classList.add('bg-gray-800', 'text-white');
+      mainContent.classList.remove('bg-white');
+      toggleButton.textContent = 'Light Mode';
+      
+      // Update input text color for dark mode
+      inputs.forEach(input => {
+        input.classList.add('bg-gray-700', 'text-white', 'border-gray-600');
+      });
+      
+      // Ensure labels and form text are white in dark mode
+      labels.forEach(label => {
+        label.classList.add('text-white');
+      });
+      
+      formText.forEach(element => {
+        element.classList.add('text-white');
+      });
+    } else {
+      body.classList.add('bg-gray-100', 'text-gray-900');
+      mainContent.classList.add('bg-white');
+      toggleButton.textContent = 'Dark Mode';
+    }
+  
+    // Toggle dark mode
+    toggleButton.addEventListener('click', () => {
+      // Toggle body classes
+      body.classList.toggle('bg-gray-900');
+      body.classList.toggle('bg-gray-100');
+      body.classList.toggle('text-white');
+      body.classList.toggle('text-gray-900');
+      
+      // Toggle main content classes
+      mainContent.classList.toggle('bg-gray-800');
+      mainContent.classList.toggle('bg-white');
+      mainContent.classList.toggle('text-white');
+      mainContent.classList.toggle('shadow-lg');
+      
+      // Toggle text color for all form inputs
+      inputs.forEach(input => {
+        input.classList.toggle('bg-gray-700');
+        input.classList.toggle('text-white');
+        input.classList.toggle('border-gray-600');
+      });
+      
+      // Toggle text color for all labels
+      labels.forEach(label => {
+        label.classList.toggle('text-white');
+      });
+      
+      // Toggle text color for form text elements
+      formText.forEach(element => {
+        element.classList.toggle('text-white');
+      });
+      
+      const isDarkMode = body.classList.contains('bg-gray-900');
+      toggleButton.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+  
+      // Save the theme to localStorage
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const resetButton = document.getElementById('reset-button');
+  
+      if (resetButton) {
+        resetButton.addEventListener('click', function (event) {
+          event.preventDefault(); // prevent form submission
+  
+          // Clear text, number, and email input fields
+          document.querySelectorAll('input[type="text"], input[type="number"], input[type="email"]').forEach(input => {
+            input.value = '';
+          });
+  
+          // Reset all select elements to first option
+          document.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+          });
+  
+          // Hide prediction result if shown
+          const predictionDiv = document.querySelector('.mt-8.text-center');
+          if (predictionDiv) {
+            predictionDiv.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+  <script>
+    window.addEventListener('load', function () {
+      const form = document.getElementById('my-form');
+      if (form) {
+        form.reset();
+      }
+    });
+  </script>
 </body>
 </html>
