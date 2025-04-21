@@ -1,40 +1,24 @@
 import pandas as pd
-import numpy as np
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 import joblib
-import os
 
-# Create sample data
-np.random.seed(42)
-n_samples = 1000
+# Load your dataset
+data = pd.read_csv("insurance.csv")  # Replace with your dataset path
 
-data = {
-    'age': np.random.randint(18, 65, n_samples),
-    'sex': np.random.choice(['male', 'female'], n_samples),
-    'bmi': np.random.normal(26, 4, n_samples),
-    'children': np.random.randint(0, 5, n_samples),
-    'smoker': np.random.choice(['yes', 'no'], n_samples),
-    'region': np.random.choice(['northeast', 'northwest', 'southeast', 'southwest'], n_samples),
-    'charges': np.random.normal(13000, 5000, n_samples)
-}
+# Preprocessing
+data['sex'] = data['sex'].map({'male': 0, 'female': 1})
+data['smoker'] = data['smoker'].map({'yes': 1, 'no': 0})
+data['region'] = data['region'].map({'northeast': 0, 'northwest': 1, 'southeast': 2, 'southwest': 3})
 
-df = pd.DataFrame(data)
+X = data.drop('charges', axis=1)
+y = data['charges']
 
-# Prepare the features
-le = LabelEncoder()
-df['sex'] = le.fit_transform(df['sex'])
-df['smoker'] = le.fit_transform(df['smoker'])
-df['region'] = le.fit_transform(df['region'])
+# Train model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
 
-# Separate features and target
-X = df.drop('charges', axis=1)
-y = df['charges']
-
-# Train the model
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X, y)
-
-# Save the model
+# Save model
 joblib.dump(model, 'model.pkl')
-print("Model trained and saved successfully!")
+print("Model saved as model.pkl")
