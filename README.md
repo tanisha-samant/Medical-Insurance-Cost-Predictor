@@ -47,4 +47,4 @@ Follow these steps to get a copy of the project up and running on your local mac
    ```bash
    python app.py
 2. Open your web browser and go to http://127.0.0.1:5000.
-3. Fill out the form with the required information and click "Predict Insurance Cost" to see the prediction.
+3. Fill out the form with the required information and click "Predict" to see the prediction.
